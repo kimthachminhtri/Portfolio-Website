@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Cá Nhân</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+  <header class="bg-blue-600 text-white py-10 text-center">
+    <h1 class="text-3xl font-bold">Xin chào, tôi là <span class="text-yellow-300">Nguyễn Văn A</span></h1>
+    <p class="mt-2">Lập trình viên Web | Sinh viên CNTT</p>
+    <nav class="mt-4">
+      <ul class="flex justify-center space-x-4">
+        <li><a href="#about" class="hover:underline">Giới thiệu</a></li>
+        <li><a href="#projects" class="hover:underline">Dự án</a></li>
+        <li><a href="#blog" class="hover:underline">Blog</a></li>
+        <li><a href="#contact" class="hover:underline">Liên hệ</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="about" class="max-w-3xl mx-auto my-8 bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-semibold mb-2">Giới thiệu</h2>
+    <p class="mb-2">Tôi là sinh viên chuyên ngành Công nghệ Thông tin, yêu thích lập trình web và đang từng bước phát triển kỹ năng qua các dự án nhỏ.</p>
+    <ul class="list-disc list-inside">
+      <li><strong>Kỹ năng:</strong> HTML, CSS, JavaScript, Git</li>
+      <li><strong>Học vấn:</strong> Đại học Công nghệ XYZ</li>
+    </ul>
+  </section>
+
+  <section id="projects" class="max-w-3xl mx-auto my-8 bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-semibold mb-4">Dự án</h2>
+    <div class="mb-4">
+      <h3 class="text-lg font-bold">Website bán hàng mini</h3>
+      <p>Trang web bán hàng đơn giản có giỏ hàng và giao diện responsive.</p>
+      <a href="https://github.com/tenban/shop-mini" class="text-blue-500 hover:underline" target="_blank">Xem trên GitHub</a>
+    </div>
+    <div>
+      <h3 class="text-lg font-bold">To-Do List App</h3>
+      <p>Ứng dụng quản lý công việc cá nhân, viết bằng ReactJS.</p>
+      <a href="https://github.com/tenban/todolist" class="text-blue-500 hover:underline" target="_blank">Xem trên GitHub</a>
+    </div>
+  </section>
+
+  <section id="blog" class="max-w-3xl mx-auto my-8 bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-semibold mb-4">Blog</h2>
+    <div id="blog-posts"></div>
+    <div class="flex justify-center space-x-2 mt-4">
+      <button onclick="changePage(-1)" class="px-4 py-2 bg-gray-200 rounded">Trang trước</button>
+      <button onclick="changePage(1)" class="px-4 py-2 bg-gray-200 rounded">Trang sau</button>
+    </div>
+  </section>
+
+  <section id="contact" class="max-w-3xl mx-auto my-8 bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-semibold mb-2">Liên hệ</h2>
+    <p>Email: <a href="mailto:nguyenvana@example.com" class="text-blue-600 hover:underline">nguyenvana@example.com</a></p>
+    <p>GitHub: <a href="https://github.com/tenban" class="text-blue-600 hover:underline" target="_blank">github.com/tenban</a></p>
+    <p>CV: <a href="./cv.pdf" class="text-blue-600 hover:underline" download>Tải xuống CV</a></p>
+  </section>
+
+  <footer class="bg-gray-800 text-white text-center py-4">
+    <p>© 2025 Nguyễn Văn A | Thiết kế bằng TailwindCSS, responsive & hỗ trợ bình luận, phân trang</p>
+  </footer>
+
+  <script>
+    const posts = [
+      { title: "5 cách học lập trình hiệu quả", content: "Đây là những mẹo nhỏ giúp bạn học lập trình nhanh hơn và ít nản hơn." },
+      { title: "GitHub cho người mới bắt đầu", content: "Hướng dẫn cơ bản về GitHub: tạo repo, commit, push code..." },
+      { title: "Lập trình web từ số 0", content: "Hành trình của tôi bắt đầu với HTML và CSS cơ bản." },
+      { title: "ReactJS: Tại sao nên học?", content: "React giúp bạn xây dựng giao diện nhanh chóng, hiệu quả." }
+    ];
+
+    let currentPage = 0;
+    const postsPerPage = 2;
+
+    function renderPosts() {
+      const container = document.getElementById('blog-posts');
+      container.innerHTML = '';
+      const start = currentPage * postsPerPage;
+      const pagePosts = posts.slice(start, start + postsPerPage);
+
+      pagePosts.forEach((post, index) => {
+        const commentKey = `comment-${start + index}`;
+        const savedComment = localStorage.getItem(commentKey) || '';
+
+        const postEl = document.createElement('div');
+        postEl.classList.add('mb-6');
+        postEl.innerHTML = `
+          <h3 class="text-lg font-bold">${post.title}</h3>
+          <p>${post.content}</p>
+          <div class="mt-2">
+            <input id="input-${commentKey}" value="${savedComment}" class="border p-2 w-full" placeholder="Bình luận của bạn...">
+            <button class="mt-2 px-4 py-2 bg-blue-500 text-white rounded" onclick="saveComment('${commentKey}')">Gửi</button>
+          </div>
+        `;
+        container.appendChild(postEl);
+      });
+    }
+
+    function saveComment(key) {
+      const input = document.getElementById(`input-${key}`);
+      localStorage.setItem(key, input.value);
+      alert('Bình luận đã lưu tạm thời!');
+    }
+
+    function changePage(delta) {
+      const totalPages = Math.ceil(posts.length / postsPerPage);
+      currentPage = Math.max(0, Math.min(currentPage + delta, totalPages - 1));
+      renderPosts();
+    }
+
+    renderPosts();
+  </script>
+</body>
+</html>
